@@ -1,4 +1,4 @@
-import './App.css';
+import React from 'react';
 import '@rainbow-me/rainbowkit/styles.css';
 import {
   getDefaultWallets,
@@ -15,7 +15,7 @@ import { publicProvider } from 'wagmi/providers/public';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, chain.goerli],
+  [chain.optimism, chain.optimismGoerli],
   [
     alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
     publicProvider()
@@ -35,15 +35,15 @@ const wagmiClient = createClient({
 
 function App() {
   return (
+
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-
-        <ConnectButton />
         <div className="App">
+          <ConnectButton />
         </div>
-
       </RainbowKitProvider>
     </WagmiConfig>
+
   );
 }
 
