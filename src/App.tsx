@@ -13,9 +13,10 @@ import {
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import Content from "./components/Content";
 
 const { chains, provider } = configureChains(
-  [chain.optimism, chain.optimismGoerli],
+  [chain.optimism, chain.optimismGoerli, chain.goerli],
   [
     alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
     publicProvider()
@@ -40,6 +41,7 @@ function App() {
       <RainbowKitProvider chains={chains}>
         <div className="App">
           <ConnectButton />
+          <Content />
         </div>
       </RainbowKitProvider>
     </WagmiConfig>
