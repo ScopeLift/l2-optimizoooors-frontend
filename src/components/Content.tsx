@@ -75,6 +75,9 @@ export default function Content() {
       <button disabled={!write} onClick={() => write?.()}>
         Approve Token
       </button>
+      <h1 className="text-3xl underline">
+      Hello world!
+      </h1>
     </div>
   )
 }
