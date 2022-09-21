@@ -14,6 +14,7 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Content from "./components/Content";
+import { SendTransaction } from './components/SendTransaction';
 
 const { chains, provider } = configureChains(
   [chain.optimism, chain.optimismGoerli, chain.goerli],
