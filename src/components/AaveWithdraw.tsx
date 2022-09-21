@@ -16,24 +16,20 @@ interface Props {
 
 export default function AaveWithdraw({withdrawContractAddr} : Props) {
 
-  const { config: ApproveToken } = usePrepareContractWrite({
+  const { config: approveATokenConfig } = usePrepareContractWrite({
     ...contractConfig,
     functionName: 'approve',
     args: [config.address, constants.MaxUint256 ]
   })
 
-  const { data: DataApproveToken,
+  const {
+    data: DataApproveToken,
     isLoading: isApproveTokenLoading,
     isSuccess: isApproveTokenSuccess,
-    write
-  } = useContractWrite(ApproveToken)
-
-  const withdrawSubmit = () => {
-    const writeReturnValue = write?.()
-  }
+    write: approveATokenSpend,
+  } = useContractWrite(approveATokenConfig)
 
   // Withdraw token
-
   const { config: withdrawConfig } = usePrepareSendTransaction({
     request: {
       to: withdrawContractAddr,
@@ -42,26 +38,23 @@ export default function AaveWithdraw({withdrawContractAddr} : Props) {
     },
   })
 
-  const { data: withdrawData,
+  const {
+    data: withdrawData,
     isLoading: isWithdrawLoading,
     isSuccess: isWithdrawSuccess,
-    sendTransaction: sendWithdrawTransaction } =
-    useSendTransaction(withdrawConfig)
+    sendTransaction: sendWithdrawTransaction
+  } = useSendTransaction(withdrawConfig);
 
   useEffect(() => {
-    console.log('gary', isApproveTokenSuccess, sendWithdrawTransaction, isWithdrawSuccess);
-
     if(isApproveTokenSuccess && sendWithdrawTransaction) {
       sendWithdrawTransaction?.()
-      console.log('gary', isApproveTokenSuccess, sendWithdrawTransaction, isWithdrawSuccess);
     }
-
   },[isApproveTokenSuccess, sendWithdrawTransaction])
 
 
   return (
     <div>
-      <button onClick={() => withdrawSubmit()}>
+      <button onClick={() => approveATokenSpend?.()}>
         Withdraw from Aave
       </button>
     </div>
