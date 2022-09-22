@@ -9,6 +9,7 @@ import {
 } from 'wagmi'
 import { UseContractConfig } from 'wagmi/dist/declarations/src/hooks/contracts/useContract'
 import { BigNumber } from 'ethers'
+import { formatEther } from 'ethers/lib/utils'
 
 const aTokenContract: UseContractConfig = {
   addressOrName: aTokenConfig.address,
@@ -70,12 +71,12 @@ export default function Content() {
 
   return (
     <div>
-      <div>aTokenBalance: {aTokenBalance.toString()}</div>
-      <div>aTokenWithdrawRouterAllowance: {aTokenWithdrawRouterAllowance.toString()}</div>
+      <div>aTokenBalance: {formatEther(aTokenBalance)} ETH</div>
+      <div>aTokenWithdrawRouterAllowance: {formatEther(aTokenWithdrawRouterAllowance)} ETH</div>
 
       {/* <SendTransaction to={depositContractAddr} /> */}
       {/* <AaveWithdraw withdrawContractAddr={withdrawContractAddr} /> */}
-      <AavePartialWithdraw withdrawContractAddr={withdrawContractAddr} />
+      <AavePartialWithdraw {...{withdrawContractAddr, aTokenWithdrawRouterAllowance, aTokenBalance}} />
     </div>
   );
 }
