@@ -54,8 +54,8 @@ export default function AaveWithdraw({withdrawContractAddr} : Props) {
 
   return (
     <div>
-      <button className="btn" onClick={() => approveATokenSpend?.()}>
-        Withdraw from Aave
+      <button className="tailwind-btn" onClick={() => approveATokenSpend?.()}>
+        Withdraw
       </button>
       {isWithdrawLoading && <div>Check Wallet</div>}
       {isWithdrawSuccess && <div>Withdrawal Succeeded! {JSON.stringify(withdrawData)}</div>}

@@ -70,7 +70,14 @@ export default function Content() {
   }
 
   return (
-    <div className="rounded p-20 pt-40 flex flex-col items-center justify-center space-y-2">
+    <div className="rounded-3xl p-5 mt-40 mb-80 w-80 flex flex-col items-center space-y-2 bg-white">
+      <div className="flex flex-col justify-center items-center space-y-2">
+        <select className='outline-none bg-transparent ring-none focus: ring-white focus:ring-1 rounded-full text-center py-2 px-0 pl-2'>
+          <option>Aave</option>
+          <option>Connext</option>
+          <option>Superfluid</option>
+        </select>
+      </div>
       <div>aTokenBalance: {formatEther(aTokenBalance)} ETH</div>
       <div>aTokenWithdrawRouterAllowance: {formatEther(aTokenWithdrawRouterAllowance)} ETH</div>
 

@@ -3,6 +3,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import {
   getDefaultWallets,
   RainbowKitProvider,
+  darkTheme
 } from '@rainbow-me/rainbowkit';
 import {
   chain,
@@ -14,9 +15,10 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Content from "./components/Content";
+import logo from "./optimizooor-logo.png"
 
 const { chains, provider } = configureChains(
-  [chain.optimism, chain.optimismGoerli, chain.goerli],
+  [chain.optimism],
   [
     alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
     publicProvider()
@@ -37,12 +39,25 @@ const wagmiClient = createClient({
 function App() {
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
-        <div className="bg-white">
-          <div className="flex justify-end p-2">
-            <ConnectButton />
+      <RainbowKitProvider chains={chains} theme={darkTheme({
+        accentColor: '#ad3030',
+        accentColorForeground: 'white',
+        fontStack: 'system',
+        overlayBlur: 'small',
+      })}>
+        <div className="h-screen bg-no-repeat bg-cover bg-center bg-[url('/images/ring-nebula.png')]">
+          <div className="flex justify-between p-3">
+            <img alt='logo' src={logo} className="w-60 -mt-24 -ml-4"></img>
+            <div>
+              <ConnectButton />
+            </div>
           </div>
-          <Content />
+          <div className="flex justify-center items-center">
+            <Content />
+          </div>
+          <div className='flex justify-center w-40 bg-white -mt-20'>
+              <p><a href="https://www.scopelift.co/">© ScopeLift 2022</a></p>
+            </div>
         </div>
       </RainbowKitProvider>
     </WagmiConfig>
