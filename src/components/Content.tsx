@@ -10,6 +10,10 @@ import {
 import { UseContractConfig } from 'wagmi/dist/declarations/src/hooks/contracts/useContract'
 import { BigNumber } from 'ethers'
 import { formatEther } from 'ethers/lib/utils'
+import AaveLogo from "../logos/aave-logo.png"
+import ConnextLogo from "../logos/connext-logo.png"
+import SuperfluidLogo from "../logos/superfluid-logo.png"
+
 
 const aTokenContract: UseContractConfig = {
   addressOrName: aTokenConfig.address,
@@ -22,7 +26,9 @@ const withdrawContractAddr = '0x5f7ca09fd143e24e3afbc90c842f0882c9ed7053'
 export default function Content() {
   const [aTokenBalance, setATokenBalance] = useState<undefined | BigNumber>();
   const [aTokenWithdrawRouterAllowance, setATokenAllowance] = useState<undefined | BigNumber>();
+  const [select, setSelect] = useState<string>('Aave');
   const { address: walletAddr } = useAccount();
+
 
   const {
     data: readContractData,
@@ -71,15 +77,22 @@ export default function Content() {
 
   return (
     <div className="rounded-3xl p-5 mt-40 mb-80 w-80 flex flex-col items-center space-y-2 bg-white">
-      <div className="flex flex-col justify-center items-center space-y-2">
-        <select className='outline-none bg-transparent ring-none focus: ring-white focus:ring-1 rounded-full text-center py-2 px-0 pl-2'>
-          <option>Aave</option>
-          <option>Connext</option>
-          <option>Superfluid</option>
+
+      <div className="flex flex-inline justify-center items-center space-y-2 mb-2 -mt-2">
+
+        {select === 'Aave' && <label><img src={AaveLogo} alt='aave-logo' className="w-8 mt-2"></img></label>}
+        {select === 'Connext' && <label><img src={ConnextLogo} alt='aave-logo' className="w-8 mt-2"></img></label>}
+        {select === 'Superfluid' && <label><img src={SuperfluidLogo} alt='aave-logo' className="w-8 mt-2"></img></label>}
+
+        <select onChange={e => setSelect(e.target.value)} className='flex-inline outline-none bg-transparent ring-none focus: ring-white focus:ring-1 rounded-full text-center py-2 px-0 pl-2'>
+          <option value='Aave'>Aave</option>
+          <option value='Connext'>Connext</option>
+          <option value='Superfluid'>Superfluid</option>
         </select>
+
       </div>
-      <div>aTokenBalance: {formatEther(aTokenBalance)} ETH</div>
-      <div>aTokenWithdrawRouterAllowance: {formatEther(aTokenWithdrawRouterAllowance)} ETH</div>
+      {/* <div>aTokenBalance: {formatEther(aTokenBalance)} ETH</div>
+      <div>aTokenWithdrawRouterAllowance: {formatEther(aTokenWithdrawRouterAllowance)} ETH</div> */}
 
       <SendTransaction to={depositContractAddr} />
       <AavePartialWithdraw {...{withdrawContractAddr, aTokenWithdrawRouterAllowance, aTokenBalance}} />

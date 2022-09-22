@@ -60,14 +60,11 @@ export const SendTransaction = ({ to }: Props) => {
       <button disabled={isLoading || !sendTransaction || !to || !amount} className='tailwind-btn'>
         {isLoading ? 'Depositing...' : 'Deposit'}
       </button>
-      {isSuccess && (
-        <div>
-          Successfully sent {amount} ether to {to}
-          <div>
-            <a href={`https://optimistic.etherscan.io/tx/${data?.hash}`}>Etherscan</a>
-          </div>
-        </div>
-      )}
+      {/* {isSuccess && (
+        <button disabled={isLoading || !sendTransaction || !to || !amount} className='tailwind-btn'>
+        <a href={`https://optimistic.etherscan.io/tx/${data?.hash}`} target="_blank" rel="noreferrer">Etherscan</a>
+        </button>
+      )} */}
       </div>
     </form>
   )

@@ -15,7 +15,7 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Content from "./components/Content";
-import logo from "./optimizooor-logo.png"
+import logo from "./logos/optimizooor-logo.png"
 
 const { chains, provider } = configureChains(
   [chain.optimism],

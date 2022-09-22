@@ -6,6 +6,7 @@ import {
   usePrepareSendTransaction,
   useContractReads,
   usePrepareContractWrite,
+  useWaitForTransaction,
   useContractWrite
 } from 'wagmi'
 import { UseContractConfig } from 'wagmi/dist/declarations/src/hooks/contracts/useContract'
@@ -64,6 +65,9 @@ export default function AavePartialWithdraw(
   }
 
   const dataForWithdrawTx = ():string => {
+    if(aTokenBalance.eq('0')) {
+      return '0x00';
+    }
     const percent = parsedAmount().mul("100").div(aTokenBalance);
     // We multiply by 255 because that is the maximum value that can be stored
     // in 2 bytes. So we express the percentage in terms of 255. In a better
@@ -91,6 +95,10 @@ export default function AavePartialWithdraw(
     sendTransaction: sendWithdrawTransaction
   } = useSendTransaction(withdrawConfig);
 
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: withdrawData?.hash,
+  })
+
   useEffect(() => {
     if(isApproveTokenSuccess) setReadyForWithdraw(true)
   }, [isApproveTokenSuccess])
@@ -103,31 +111,37 @@ export default function AavePartialWithdraw(
     }
   }, [readyForWithdraw, withdrawClicked])
 
-  if (isWithdrawSuccess) {
-    return(
-      <div>
-        Withdrawal Succeeded! View on <a href={`https://optimistic.etherscan.io/tx/${withdrawData?.hash}`}>Etherscan</a>
-      </div>
-    );
-  }
+  // if (isWithdrawSuccess) {
+  //   return(
+  //     <div>
+  //       Withdrawal Succeeded! View on <a href={`https://optimistic.etherscan.io/tx/${withdrawData?.hash}`}>Etherscan</a>
+  //     </div>
+  //   );
+  // }
 
   return (
     <form
-      className="outline outline-black outline-solid rounded-md w-1/2"
+      className="flex items-center"
       onSubmit={(event) => {
         event.preventDefault();
         approveATokenSpendIfNecessary();
       }}
     >
       <input
-        className="p-4"
+        type="number"
+        step="0.000000000000000001"
+        className="box-content py-2 px-4 w-20 h-5 mr-2 outline-none bg-transparent ring-none
+        focus: border-indigo-500 focus:ring-indigo-500 focus:ring-1 rounded-full [appearance:textfield] text-center
+        disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
+      invalid:border-red-500 invalid:text-red-600
+      focus:invalid:border-red-500 focus:invalid:ring-red-500"
         aria-label="Amount (AToken)"
         onChange={(e) => setAmount(e.target.value)}
         placeholder="0.05"
         value={amount}
       />
-      <button className="p-4 m-2 bg-green-200 rounded-md hover:bg-green-300">
-        Partial Withdraw from Aave
+      <button disabled={isWithdrawLoading || !sendWithdrawTransaction || !amount} className="tailwind-btn">
+        {isLoading ? 'Withdrawing...' : 'Withdraw'}
       </button>
     </form>
   )
