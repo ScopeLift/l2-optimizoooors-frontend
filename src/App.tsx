@@ -38,8 +38,10 @@ function App() {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <div className="App">
-          <ConnectButton />
+        <div className="bg-white">
+          <div className="flex justify-end p-2">
+            <ConnectButton />
+          </div>
           <Content />
         </div>
       </RainbowKitProvider>

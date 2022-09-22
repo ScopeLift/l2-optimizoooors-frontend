@@ -35,13 +35,17 @@ export const SendTransaction = ({ to }: Props) => {
         sendTransaction?.()
       }}
     >
+      <div className="flex flex-col items-center">
+      <div>
       <input
         aria-label="Amount (ether)"
         onChange={(e) => setAmount(e.target.value)}
         placeholder="0.05"
         value={amount}
+        className="box-content py-2 px-3 outline-none ring-none focus: ring-gray-500 focus:ring-2 rounded-full"
       />
-      <button disabled={isLoading || !sendTransaction || !to || !amount}>
+      </div>
+      <button disabled={isLoading || !sendTransaction || !to || !amount} className='btn mt-2'>
         {isLoading ? 'Depositing...' : 'Deposit'}
       </button>
       {isSuccess && (
@@ -52,6 +56,7 @@ export const SendTransaction = ({ to }: Props) => {
           </div>
         </div>
       )}
+      </div>
     </form>
   )
 }

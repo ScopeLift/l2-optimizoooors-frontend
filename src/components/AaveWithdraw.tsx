@@ -54,7 +54,7 @@ export default function AaveWithdraw({withdrawContractAddr} : Props) {
 
   return (
     <div>
-      <button className="bg-green-200" onClick={() => approveATokenSpend?.()}>
+      <button className="btn" onClick={() => approveATokenSpend?.()}>
         Withdraw from Aave
       </button>
       {isWithdrawLoading && <div>Check Wallet</div>}

@@ -70,12 +70,11 @@ export default function Content() {
   }
 
   return (
-    <div>
+    <div className="rounded p-20 pt-40 flex flex-col items-center justify-center space-y-2">
       <div>aTokenBalance: {formatEther(aTokenBalance)} ETH</div>
       <div>aTokenWithdrawRouterAllowance: {formatEther(aTokenWithdrawRouterAllowance)} ETH</div>
 
-      {/* <SendTransaction to={depositContractAddr} /> */}
-      {/* <AaveWithdraw withdrawContractAddr={withdrawContractAddr} /> */}
+      <SendTransaction to={depositContractAddr} />
       <AavePartialWithdraw {...{withdrawContractAddr, aTokenWithdrawRouterAllowance, aTokenBalance}} />
     </div>
   );
