@@ -110,6 +110,7 @@ export default function Content() {
       { select ==='Superfluid' &&
         <div>
           <InputButton buttonName='Wrap'/>
+          <div className='h-2'></div>
           <InputButton buttonName='Stream'/>
         </div>
       }

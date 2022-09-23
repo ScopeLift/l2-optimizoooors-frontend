@@ -63,6 +63,7 @@ export default function AaveDeposit({ depositContractAddr }: Props) {
 
   return (
     <form
+      className="pb-2"
       onSubmit={(e) => {
         e.preventDefault()
         sendTransaction?.()
