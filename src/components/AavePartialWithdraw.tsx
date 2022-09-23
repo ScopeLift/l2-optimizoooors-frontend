@@ -121,7 +121,7 @@ export default function AavePartialWithdraw(
 
   return (
     <form
-      className="flex items-center"
+      className="flex bg-gray-100 rounded-xl p-4"
       onSubmit={(event) => {
         event.preventDefault();
         approveATokenSpendIfNecessary();
@@ -131,7 +131,7 @@ export default function AavePartialWithdraw(
         type="number"
         step="0.000000000000000001"
         className="box-content py-2 px-4 w-20 h-5 mr-2 outline-none bg-transparent ring-none
-        focus: border-indigo-500 focus:ring-indigo-500 focus:ring-1 rounded-full [appearance:textfield] text-center
+        focus: border-indigo-500 focus:ring-indigo-500 focus:ring-1 rounded-xl [appearance:textfield] text-left
         disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
       invalid:border-red-500 invalid:text-red-600
       focus:invalid:border-red-500 focus:invalid:ring-red-500"
