@@ -82,7 +82,7 @@ export default function Content() {
   }
 
   return (
-    <div className="rounded-3xl p-5 my-auto w-80 flex flex-col items-center space-y-2 bg-white">
+    <div style={{width: "500px"}} className="rounded-3xl p-5 my-auto flex flex-col items-center space-y-2 bg-white">
 
       <div className="flex flex-inline justify-center items-center space-y-2 mb-2 -mt-2">
         {select === 'Aave' && <label><img src={AaveLogo} alt='aave-logo' className="w-8 mt-2"></img></label>}
