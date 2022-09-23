@@ -9,7 +9,7 @@ import {
 } from 'wagmi'
 import { formatEther, parseEther } from 'ethers/lib/utils'
 import { BigNumber } from 'ethers'
-
+import Modal from './Modal'
 interface Props {
   depositContractAddr: string;
 }
@@ -21,6 +21,7 @@ export default function AaveDeposit({ depositContractAddr }: Props) {
   const { address: walletAddr } = useAccount();
   const { data: balanceData } = useBalance({ addressOrName: walletAddr });
   const ethBalance = balanceData?.value;
+  const [openModal, setOpenModal] = useState(false)
 
   const depositInput = useRef<HTMLInputElement>(null);
   useEffect(() => { if (depositInput.current) depositInput.current!.focus()});
@@ -49,6 +50,16 @@ export default function AaveDeposit({ depositContractAddr }: Props) {
     setDepositMax(true);
     if (ethBalance) setAmount(formatEther(ethBalance).substring(0,12));
   };
+
+  useEffect(() => {
+    if(isSuccess) {
+      setOpenModal(true);
+    }
+  },[isSuccess])
+
+  const handleClose = () => {
+    setOpenModal(false);
+  }
 
   return (
     <form
@@ -91,6 +102,7 @@ export default function AaveDeposit({ depositContractAddr }: Props) {
           <a href={`https://optimistic.etherscan.io/tx/${data?.hash}`} target="_blank" rel="noreferrer">Etherscan</a>
           </button>
         )} */}
+        <Modal openState={openModal} handleClose={handleClose} txType='Deposit' txHash={data?.hash}/>
       </div>
     </form>
   )

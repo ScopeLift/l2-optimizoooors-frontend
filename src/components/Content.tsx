@@ -13,6 +13,7 @@ import AaveLogo from "../logos/aave-logo.png"
 import ConnextLogo from "../logos/connext-logo.png"
 import SuperfluidLogo from "../logos/superfluid-logo.png"
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import InputButton from './InputButton'
 
 const aTokenContract: UseContractConfig = {
   addressOrName: aTokenConfig.address,
@@ -50,7 +51,6 @@ export default function Content() {
   });
 
   useEffect(() => {
-    if (!walletAddr) return;
 
     if (isReadContractSuccess && readContractData) {
       const balance = (readContractData[0] as unknown) as BigNumber;
@@ -102,8 +102,25 @@ export default function Content() {
       {/* <div>aTokenBalance: {formatEther(aTokenBalance)} ETH</div>
       <div>aTokenWithdrawRouterAllowance: {formatEther(aTokenWithdrawRouterAllowance)} ETH</div> */}
 
-      <AaveDeposit {...{depositContractAddr}} />
-      <AaveWithdraw {...{withdrawContractAddr, aTokenWithdrawRouterAllowance, aTokenBalance}} />
+      { select==='Aave' &&
+      <div>
+        <AaveDeposit {...{depositContractAddr}} />
+        <AaveWithdraw {...{withdrawContractAddr, aTokenWithdrawRouterAllowance, aTokenBalance}} />
+      </div>}
+      { select ==='Superfluid' &&
+        <div>
+          <InputButton buttonName='Wrap'/>
+          <InputButton buttonName='Stream'/>
+        </div>
+      }
+
+      { select ==='Connext' &&
+        <div>
+          <InputButton buttonName='Bridge'/>
+        </div>
+      }
+
+      { !walletAddr && <ConnectButton />}
     </div>
   );
 }
