@@ -55,9 +55,15 @@ function App() {
           <div className="flex justify-center items-center">
             <Content />
           </div>
-          <div className='flex justify-center w-40 bg-white -mt-20'>
-              <p><a href="https://www.scopelift.co/">© ScopeLift 2022</a></p>
+
+          <div className="absolute inset-x-0 bottom-0 rounded-xl overflow-auto p-8">
+            <div className="flex flex-col mx-auto space-y-4 font-mono text-white text-lg font-bold leading-6 max-w-xs">
+              <div className="p-4 rounded-lg flex items-center justify-center">
+                <a href="https://www.scopelift.co/">© ScopeLift 2022</a>
+              </div>
             </div>
+          </div>
+
         </div>
       </RainbowKitProvider>
     </WagmiConfig>
