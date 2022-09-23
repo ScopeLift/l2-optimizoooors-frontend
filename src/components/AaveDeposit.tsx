@@ -43,7 +43,7 @@ export default function AaveDeposit({ to }: Props) {
         <div>
           <input
             type="number"
-            step="0.000000000000000001"
+            step="0.000001"
             aria-label="Amount (ether)"
             onChange={(e) => {
               setAmount(e.target.value)
@@ -52,8 +52,8 @@ export default function AaveDeposit({ to }: Props) {
             ref={depositInput}
             placeholder="0.0"
             value={amount}
-            className="box-content py-2 px-4 w-20 h-5 mr-2 outline-none bg-transparent ring-none
-            rounded-xl [appearance:textfield] text-left
+            className="box-content py-2 w-32 text-center h-5 mr-2 outline-none bg-transparent ring-none
+            rounded-xl [appearance:textfield]
             disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
             invalid:border-red-500 invalid:text-red-600
             focus:invalid:border-red-500 focus:invalid:ring-red-500
