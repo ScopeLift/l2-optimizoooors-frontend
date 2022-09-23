@@ -47,7 +47,7 @@ function App() {
       })}>
         <div className="h-screen bg-no-repeat bg-cover bg-center bg-[url('/images/ring-nebula.png')]">
           <div className="flex justify-between mb-10 p-3">
-            <img alt='logo' src={logo} className="w-60 -mt-24 -ml-4"></img>
+            <img alt='logo' src={logo} className="w-60"></img>
             <div>
               <ConnectButton />
             </div>
