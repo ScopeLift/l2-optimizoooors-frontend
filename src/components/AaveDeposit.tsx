@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { useDebounce } from 'use-debounce'
 import {
   usePrepareSendTransaction,
@@ -15,6 +15,9 @@ export default function AaveDeposit({ to }: Props) {
   const [debouncedTo] = useDebounce(to, 500)
   const [amount, setAmount] = useState('')
   const [debouncedValue] = useDebounce(amount, 500)
+
+  const depositInput = useRef<HTMLInputElement>(null);
+  useEffect(() => { if (depositInput.current) depositInput.current!.focus()});
 
   const { config } = usePrepareSendTransaction({
     request: {
@@ -46,17 +49,18 @@ export default function AaveDeposit({ to }: Props) {
               setAmount(e.target.value)
               }
             }
-            placeholder="0.05"
+            ref={depositInput}
+            placeholder="0.0"
             value={amount}
             className="box-content py-2 px-4 w-20 h-5 mr-2 outline-none bg-transparent ring-none
-            focus: border-indigo-500 focus:ring-indigo-500 focus:ring-1 rounded-xl [appearance:textfield] text-left
+            rounded-xl [appearance:textfield] text-left
             disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
-          invalid:border-red-500 invalid:text-red-600
-          focus:invalid:border-red-500 focus:invalid:ring-red-500
+            invalid:border-red-500 invalid:text-red-600
+            focus:invalid:border-red-500 focus:invalid:ring-red-500
           "
           />
-
         </div>
+
         <button disabled={isLoading || !sendTransaction || !to || !amount} className='tailwind-btn'>
           {isLoading ? 'Depositing...' : 'Deposit'}
         </button>
