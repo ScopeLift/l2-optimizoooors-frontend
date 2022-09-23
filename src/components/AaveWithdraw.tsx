@@ -12,6 +12,7 @@ import {
 import { UseContractConfig } from 'wagmi/dist/declarations/src/hooks/contracts/useContract'
 import { BigNumber } from 'ethers'
 import { formatEther, parseEther } from 'ethers/lib/utils'
+import Modal from './Modal'
 
 const aTokenContract: UseContractConfig = {
   addressOrName: aTokenConfig.address,
@@ -39,6 +40,7 @@ export default function AavePartialWithdraw(
   const [readyForWithdraw, setReadyForWithdraw] = useState<boolean>(false);
   const [withdrawClicked, setWithdrawClicked] = useState<boolean>(false);
   const [withdrawMax, setWithdrawMax] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState(false)
 
   const parsedAmount = (): BigNumber => {
     if (amount) return parseEther(parseFloat(amount).toString());
@@ -129,13 +131,15 @@ export default function AavePartialWithdraw(
     setAmount(formatEther(aTokenBalance).substring(0,12));
   };
 
-  // if (isWithdrawSuccess) {
-  //   return(
-  //     <div>
-  //       Withdrawal Succeeded! View on <a href={`https://optimistic.etherscan.io/tx/${withdrawData?.hash}`}>Etherscan</a>
-  //     </div>
-  //   );
-  // }
+  useEffect(() => {
+    if(isSuccess) {
+      setOpenModal(true);
+    }
+  },[isSuccess])
+
+  const handleClose = () => {
+    setOpenModal(false);
+  }
 
   return (
     <form
@@ -169,6 +173,7 @@ export default function AavePartialWithdraw(
       <button disabled={isWithdrawLoading || !sendWithdrawTransaction || !amount} className="tailwind-btn w-28">
         Withdraw
       </button>
+      <Modal openState={openModal} handleClose={handleClose} txType='Withdraw' txHash={withdrawData?.hash}/>
     </form>
   )
 }
