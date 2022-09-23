@@ -4,26 +4,39 @@ import {
   usePrepareSendTransaction,
   useSendTransaction,
   useWaitForTransaction,
+  useAccount,
+  useBalance,
 } from 'wagmi'
-import { parseEther } from 'ethers/lib/utils'
+import { formatEther, parseEther } from 'ethers/lib/utils'
+import { BigNumber } from 'ethers'
 
 interface Props {
-  to: string
+  depositContractAddr: string;
 }
 
-export default function AaveDeposit({ to }: Props) {
-  const [debouncedTo] = useDebounce(to, 500)
+export default function AaveDeposit({ depositContractAddr }: Props) {
   const [amount, setAmount] = useState('')
   const [debouncedValue] = useDebounce(amount, 500)
+  const [depositMax, setDepositMax] = useState<boolean>(false);
+  const { address: walletAddr } = useAccount();
+  const { data: balanceData } = useBalance({ addressOrName: walletAddr });
+  const ethBalance = balanceData?.value;
 
   const depositInput = useRef<HTMLInputElement>(null);
   useEffect(() => { if (depositInput.current) depositInput.current!.focus()});
 
+  const depositAmount = () => {
+    if (!debouncedValue) return;
+    const approximateGasNeeded = parseEther("0.000049");
+    if (depositMax && !ethBalance) return;
+    return depositMax ? ethBalance!.sub(approximateGasNeeded) : parseEther(debouncedValue);
+  }
+
   const { config } = usePrepareSendTransaction({
     request: {
-      to: debouncedTo,
-      value: debouncedValue ? parseEther(debouncedValue) : undefined,
-      gasLimit: 1e6
+      to: depositContractAddr,
+      value: depositAmount(),
+      gasLimit: 1e6 // needed to avoid ethers complaining
     },
   })
   const { data, sendTransaction } = useSendTransaction(config)
@@ -31,6 +44,11 @@ export default function AaveDeposit({ to }: Props) {
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
   })
+
+  const setMaxDeposit = () => {
+    setDepositMax(true);
+    if (ethBalance) setAmount(formatEther(ethBalance).substring(0,12));
+  };
 
   return (
     <form
@@ -46,9 +64,9 @@ export default function AaveDeposit({ to }: Props) {
             step="0.000001"
             aria-label="Amount (ether)"
             onChange={(e) => {
-              setAmount(e.target.value)
-              }
-            }
+              setDepositMax(false);
+              setAmount(e.target.value);
+            }}
             ref={depositInput}
             placeholder="0.0"
             value={amount}
@@ -56,8 +74,16 @@ export default function AaveDeposit({ to }: Props) {
           />
         </div>
 
-          <button disabled={isLoading || !sendTransaction || !to || !amount} className='tailwind-btn w-24'>
-            {isLoading ? 'Depositing...' : 'Deposit'}
+          <button
+            onClick={(event) => {
+              event.preventDefault();
+              setMaxDeposit();
+            }}
+            className='tailwind-btn-secondary w-18 mx-2'>
+            Max
+          </button>
+          <button disabled={isLoading || !sendTransaction || !depositContractAddr || !amount} className='tailwind-btn w-28'>
+            Deposit
           </button>
 
         {/* {isSuccess && (

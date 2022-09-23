@@ -10,7 +10,7 @@ import {
   useContractWrite
 } from 'wagmi'
 import { UseContractConfig } from 'wagmi/dist/declarations/src/hooks/contracts/useContract'
-import { BigNumber, constants } from 'ethers'
+import { BigNumber } from 'ethers'
 import { formatEther, parseEther } from 'ethers/lib/utils'
 
 const aTokenContract: UseContractConfig = {

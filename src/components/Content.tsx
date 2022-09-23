@@ -102,7 +102,7 @@ export default function Content() {
       {/* <div>aTokenBalance: {formatEther(aTokenBalance)} ETH</div>
       <div>aTokenWithdrawRouterAllowance: {formatEther(aTokenWithdrawRouterAllowance)} ETH</div> */}
 
-      <AaveDeposit to={depositContractAddr} />
+      <AaveDeposit {...{depositContractAddr}} />
       <AaveWithdraw {...{withdrawContractAddr, aTokenWithdrawRouterAllowance, aTokenBalance}} />
     </div>
   );
