@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { SendTransaction } from './SendTransaction'
 import aTokenConfig from '../contractConfig.json'
 import AaveWithdraw from './AaveWithdraw'
+import AaveDeposit from './AaveDeposit'
 import AavePartialWithdraw from './AavePartialWithdraw'
 import {
   useAccount,
@@ -103,7 +103,7 @@ export default function Content() {
       {/* <div>aTokenBalance: {formatEther(aTokenBalance)} ETH</div>
       <div>aTokenWithdrawRouterAllowance: {formatEther(aTokenWithdrawRouterAllowance)} ETH</div> */}
 
-      <SendTransaction to={depositContractAddr} />
+      <AaveDeposit to={depositContractAddr} />
       <AavePartialWithdraw {...{withdrawContractAddr, aTokenWithdrawRouterAllowance, aTokenBalance}} />
     </div>
   );

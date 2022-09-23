@@ -11,7 +11,7 @@ interface Props {
   to: string
 }
 
-export const SendTransaction = ({ to }: Props) => {
+export default function AaveDeposit({ to }: Props) {
   const [debouncedTo] = useDebounce(to, 500)
   const [amount, setAmount] = useState('')
   const [debouncedValue] = useDebounce(amount, 500)
