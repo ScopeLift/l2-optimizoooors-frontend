@@ -53,12 +53,12 @@ function App() {
             </div>
           </div>
 
-          <div className="flex justify-center items-center drop-shadow-2xl">
+          <div className="flex justify-center items-center text-2xl drop-shadow-2xl">
             <Content />
           </div>
 
           <div className="absolute inset-x-0 bottom-0 rounded-xl overflow-auto p-8">
-            <div className="flex flex-col mx-auto space-y-4 font-mono text-white text-lg font-bold leading-6 max-w-xs">
+            <div className="flex flex-col mx-auto space-y-4 font-mono text-white text-2xl font-bold leading-6 max-w-xs">
               <div className="p-4 rounded-lg flex items-center justify-center">
                 <a href="https://www.scopelift.co/">© ScopeLift 2022</a>
               </div>
