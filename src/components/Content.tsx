@@ -63,20 +63,12 @@ export default function Content() {
       // TODO handle
     }
     // TODO we need a way to refresh this data only when relevant!
-  }, [walletAddr]);
-
-  if (!walletAddr) {
-    return (
-      <div className="flex flex-col w-200px items-center">
-        <ConnectButton />
-      </div>
-    );
-  }
+  }, [walletAddr, isReadContractSuccess, readContractData]);
 
   if (!aTokenWithdrawRouterAllowance || !aTokenBalance) {
     return (
       <div className="rounded-3xl p-5 my-auto w-80 flex flex-col items-center space-y-2 text-white">
-        <div>Fetching balances...</div>
+        <div>Fetching balances... Refresh the page.</div>
       </div>
     );
   }
@@ -99,9 +91,6 @@ export default function Content() {
         </select>
       </div>
 
-      {/* <div>aTokenBalance: {formatEther(aTokenBalance)} ETH</div>
-      <div>aTokenWithdrawRouterAllowance: {formatEther(aTokenWithdrawRouterAllowance)} ETH</div> */}
-
       { select==='Aave' &&
       <div>
         <AaveDeposit {...{depositContractAddr}} />
@@ -120,8 +109,9 @@ export default function Content() {
           <InputButton buttonName='Bridge'/>
         </div>
       }
-
-      { !walletAddr && <ConnectButton />}
+      <div>
+        { !walletAddr && <ConnectButton />}
+      </div>
     </div>
   );
 }
