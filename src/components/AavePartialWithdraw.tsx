@@ -140,7 +140,7 @@ export default function AavePartialWithdraw(
         placeholder="0.0"
         value={amount}
       />
-      <button disabled={isWithdrawLoading || !sendWithdrawTransaction || !amount} className="tailwind-btn">
+      <button disabled={isWithdrawLoading || !sendWithdrawTransaction || !amount} className="tailwind-btn w-24">
         {isLoading ? 'Withdrawing...' : 'Withdraw'}
       </button>
     </form>

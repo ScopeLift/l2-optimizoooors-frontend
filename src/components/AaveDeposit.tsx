@@ -61,9 +61,10 @@ export default function AaveDeposit({ to }: Props) {
           />
         </div>
 
-        <button disabled={isLoading || !sendTransaction || !to || !amount} className='tailwind-btn'>
-          {isLoading ? 'Depositing...' : 'Deposit'}
-        </button>
+          <button disabled={isLoading || !sendTransaction || !to || !amount} className='tailwind-btn w-24'>
+            {isLoading ? 'Depositing...' : 'Deposit'}
+          </button>
+
         {/* {isSuccess && (
           <button disabled={isLoading || !sendTransaction || !to || !amount} className='tailwind-btn'>
           <a href={`https://optimistic.etherscan.io/tx/${data?.hash}`} target="_blank" rel="noreferrer">Etherscan</a>
