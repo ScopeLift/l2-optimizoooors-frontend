@@ -13,9 +13,8 @@ import {
 } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Content from "./components/Content";
-import logo from "./logos/optimizooor-logo.png"
+import Header from "./components/Header";
 
 const { chains, provider } = configureChains(
   [chain.optimism],
@@ -46,12 +45,7 @@ function App() {
         overlayBlur: 'small',
       })}>
         <div className="h-screen bg-no-repeat bg-cover bg-center bg-[url('/images/ring-nebula.png')]">
-          <div className="flex justify-between mb-10 p-3">
-            <img alt='logo' src={logo} className="w-60"></img>
-            <div>
-              <ConnectButton />
-            </div>
-          </div>
+          <Header />
 
           <div className="flex justify-center items-center text-2xl drop-shadow-2xl">
             <Content />

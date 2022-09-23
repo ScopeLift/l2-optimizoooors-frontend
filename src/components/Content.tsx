@@ -13,7 +13,7 @@ import { formatEther } from 'ethers/lib/utils'
 import AaveLogo from "../logos/aave-logo.png"
 import ConnextLogo from "../logos/connext-logo.png"
 import SuperfluidLogo from "../logos/superfluid-logo.png"
-
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const aTokenContract: UseContractConfig = {
   addressOrName: aTokenConfig.address,
@@ -28,7 +28,6 @@ export default function Content() {
   const [aTokenWithdrawRouterAllowance, setATokenAllowance] = useState<undefined | BigNumber>();
   const [select, setSelect] = useState<string>('Aave');
   const { address: walletAddr } = useAccount();
-
 
   const {
     data: readContractData,
@@ -68,18 +67,25 @@ export default function Content() {
   }, [walletAddr]);
 
   if (!walletAddr) {
-    return (<div>Please connect your wallet to get started.</div>);
+    return (
+      <div className="flex flex-col w-200px items-center">
+        <ConnectButton />
+      </div>
+    );
   }
 
   if (!aTokenWithdrawRouterAllowance || !aTokenBalance) {
-    return (<div>Fetching balances...</div>);
+    return (
+      <div className="rounded-3xl p-5 my-auto w-80 flex flex-col items-center space-y-2 text-white">
+        <div>Fetching balances...</div>
+      </div>
+    );
   }
 
   return (
     <div className="rounded-3xl p-5 my-auto w-80 flex flex-col items-center space-y-2 bg-white">
 
       <div className="flex flex-inline justify-center items-center space-y-2 mb-2 -mt-2">
-
         {select === 'Aave' && <label><img src={AaveLogo} alt='aave-logo' className="w-8 mt-2"></img></label>}
         {select === 'Connext' && <label><img src={ConnextLogo} alt='aave-logo' className="w-8 mt-2"></img></label>}
         {select === 'Superfluid' && <label><img src={SuperfluidLogo} alt='aave-logo' className="w-8 mt-2"></img></label>}
@@ -92,8 +98,8 @@ export default function Content() {
           <option value='Connext'>Connext</option>
           <option value='Superfluid'>Superfluid</option>
         </select>
-
       </div>
+
       {/* <div>aTokenBalance: {formatEther(aTokenBalance)} ETH</div>
       <div>aTokenWithdrawRouterAllowance: {formatEther(aTokenWithdrawRouterAllowance)} ETH</div> */}
 
