@@ -46,7 +46,7 @@ function App() {
         overlayBlur: 'small',
       })}>
         <div className="h-screen bg-no-repeat bg-cover bg-center bg-[url('/images/ring-nebula.png')]">
-          <div className="flex justify-between p-3">
+          <div className="flex justify-between mb-10 p-3">
             <img alt='logo' src={logo} className="w-60 -mt-24 -ml-4"></img>
             <div>
               <ConnectButton />
