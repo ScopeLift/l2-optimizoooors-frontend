@@ -143,7 +143,7 @@ export default function AavePartialWithdraw(
 
   return (
     <form
-      className="flex bg-gray-100 rounded-xl p-4"
+      className="flex bg-gray-100 rounded-xl p-4 items-center"
       onSubmit={(event) => {
         event.preventDefault();
         approveATokenSpendIfNecessary();

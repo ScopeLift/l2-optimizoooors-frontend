@@ -10,7 +10,7 @@ export default function InputButton({buttonName}: Props) {
 
   return (
     <div>
-        <div className="flex bg-gray-100 rounded-xl p-4">
+        <div className="flex bg-gray-100 rounded-xl p-4 items-center">
         <div>
           <input
             type="number"
