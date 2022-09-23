@@ -67,8 +67,8 @@ export default function Content() {
 
   if (!aTokenWithdrawRouterAllowance || !aTokenBalance) {
     return (
-      <div className="rounded-3xl p-5 my-auto w-80 flex flex-col items-center space-y-2 text-white">
-        <div>Fetching balances... Refresh the page.</div>
+      <div>
+      <ConnectButton />
       </div>
     );
   }
