@@ -52,7 +52,8 @@ function App() {
               <ConnectButton />
             </div>
           </div>
-          <div className="flex justify-center items-center">
+
+          <div className="flex justify-center items-center drop-shadow-2xl">
             <Content />
           </div>
 
