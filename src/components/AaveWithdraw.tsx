@@ -11,7 +11,7 @@ import {
 } from 'wagmi'
 import { UseContractConfig } from 'wagmi/dist/declarations/src/hooks/contracts/useContract'
 import { BigNumber, constants } from 'ethers'
-import { parseEther } from 'ethers/lib/utils'
+import { formatEther, parseEther } from 'ethers/lib/utils'
 
 const aTokenContract: UseContractConfig = {
   addressOrName: aTokenConfig.address,
@@ -24,6 +24,10 @@ interface Props {
   aTokenWithdrawRouterAllowance: BigNumber;
 }
 
+// We use this number b/c the hex value is "0x80....(all zeros)" which saves
+// gas and its obnoxiously big, so it's just as good as a true max allowance.
+const MAX_ALLOWANCE = BigNumber.from("2").pow("255");
+
 export default function AavePartialWithdraw(
   {
     withdrawContractAddr,
@@ -34,6 +38,7 @@ export default function AavePartialWithdraw(
   const [amount, setAmount] = useState<string | undefined>();
   const [readyForWithdraw, setReadyForWithdraw] = useState<boolean>(false);
   const [withdrawClicked, setWithdrawClicked] = useState<boolean>(false);
+  const [withdrawMax, setWithdrawMax] = useState<boolean>(false);
 
   const parsedAmount = (): BigNumber => {
     if (amount) return parseEther(parseFloat(amount).toString());
@@ -43,7 +48,10 @@ export default function AavePartialWithdraw(
   const { config: approveATokenConfig } = usePrepareContractWrite({
     ...aTokenContract,
     functionName: 'approve',
-    args: [withdrawContractAddr, parsedAmount()]
+    args: [
+      withdrawContractAddr,
+      MAX_ALLOWANCE,
+    ]
   })
 
   const {
@@ -56,18 +64,20 @@ export default function AavePartialWithdraw(
   const approveATokenSpendIfNecessary = () => {
     setWithdrawClicked(true);
 
-    // We don't need to approve if there is already sufficient allowance.
-    if (aTokenWithdrawRouterAllowance.lt(parsedAmount())) {
-      approveATokenSpend?.();
-    } else {
+    if (aTokenWithdrawRouterAllowance.gt(aTokenBalance)) {
+      // We don't need to approve if there is already sufficient allowance.
       setReadyForWithdraw(true);
+    } else {
+      approveATokenSpend?.();
     }
   }
 
-  const dataForWithdrawTx = ():string => {
-    if(aTokenBalance.eq('0')) {
-      return '0x00';
-    }
+  const dataForWithdrawTx = () => {
+    if(aTokenBalance.eq('0')) return {};
+
+    // The contract will withdraw everything if no data is passed.
+    if(withdrawMax) return {};
+
     const percent = parsedAmount().mul("100").div(aTokenBalance);
     // We multiply by 255 because that is the maximum value that can be stored
     // in 2 bytes. So we express the percentage in terms of 255. In a better
@@ -75,7 +85,9 @@ export default function AavePartialWithdraw(
     // in bytes necessary to acheive a certain level of fidelity with the
     // user-specified amount. For this demo, being able to specify amounts only
     // in 0.4 percentage increments (100/255) is good enough.
-    return percent.mul("255").div("100").toHexString();
+    const hexData = percent.mul("255").div("100").toHexString();
+
+    return {data: hexData};
   }
 
   // Withdraw token
@@ -83,8 +95,9 @@ export default function AavePartialWithdraw(
     request: {
       to: withdrawContractAddr,
       value: 0,
-      data: dataForWithdrawTx(),
+      // needed to avoid ethers yelling at us
       gasLimit: 1e6,
+      ...dataForWithdrawTx(),
     },
   })
 
@@ -111,6 +124,11 @@ export default function AavePartialWithdraw(
     }
   }, [readyForWithdraw, withdrawClicked])
 
+  const setMaxWithdraw = () => {
+    setWithdrawMax(true);
+    setAmount(formatEther(aTokenBalance).substring(0,12));
+  };
+
   // if (isWithdrawSuccess) {
   //   return(
   //     <div>
@@ -132,12 +150,24 @@ export default function AavePartialWithdraw(
         step="0.000001"
         className="tailwind-input"
         aria-label="Amount (AToken)"
-        onChange={(e) => setAmount(e.target.value)}
+        onChange={(e) => {
+          setWithdrawMax(false);
+          setAmount(e.target.value);
+        }}
         placeholder="0.0"
         value={amount}
       />
-      <button disabled={isWithdrawLoading || !sendWithdrawTransaction || !amount} className="tailwind-btn w-24">
-        {isLoading ? 'Withdrawing...' : 'Withdraw'}
+
+      <button
+        onClick={(event) => {
+          event.preventDefault();
+          setMaxWithdraw();
+        }}
+        className='tailwind-btn-secondary w-18 mx-2' >
+          Max
+      </button>
+      <button disabled={isWithdrawLoading || !sendWithdrawTransaction || !amount} className="tailwind-btn w-28">
+        Withdraw
       </button>
     </form>
   )
